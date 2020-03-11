@@ -15,7 +15,8 @@ logger = get_logger('app')
 
 config = Config()
 
-app = faust.App('scanner', broker=config.KAFKA_BROKER_URL, debug=True)
+app = faust.App('scanner', broker=config.KAFKA_BROKER_URL, debug=True,
+                web_port=8080)
 model_metadata_updates_topic = app.topic('model-metadata-updates',
                                          value_type=ModelMetadata)
 model_tasks_do = app.topic('model-tasks-do', value_type=ModelTask)
