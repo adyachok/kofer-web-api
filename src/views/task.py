@@ -24,5 +24,5 @@ class TaskDetailView(web.View):
 
     async def get(self,
                   request: web.Request,
-                  user_id: str) -> web.Response:
+                  task_id: str) -> web.Response:
         return self.json({'Bye': 'Here'})
