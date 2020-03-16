@@ -44,7 +44,7 @@ class Config:
         url = os.getenv('MONGO_URL')
         if not url:
             url = 'mongodb://web_api:secret@localhost:27017'
-        db = os.getenv('WEB-API-MONGO_DB')
+        db = os.getenv('WEB_API_MONGODB')
         if not db:
             db = 'web-api'
         return AsyncIOMotorClient(url)[db]

@@ -78,8 +78,8 @@ class MongoRepository(BaseMongoRepository):
         return await self.do_find_one('tasks', {'_id': ObjectId(task_id)})
 
     async def find_model_metadata_by_id(self, model_id):
-        model =  await self.do_find_one('model_metadata',
-                                        {'_id': ObjectId(model_id)})
+        model = await self.do_find_one('model_metadata',
+                                       {'_id': ObjectId(model_id)})
         return ModelMetadata.from_data(model)
 
     async def get_tasks(self):
