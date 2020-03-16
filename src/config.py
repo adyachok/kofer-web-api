@@ -14,6 +14,7 @@ class Config:
 
     REQUEST_INTERVAL = None
     KAFKA_BROKER_URL = None
+    WEB_PORT = None
 
     def __init__(self):
         """
@@ -23,6 +24,7 @@ class Config:
         self.REQUEST_INTERVAL = self._set_request_interval()
         self.KAFKA_BROKER_URL = self._set_kafka_url()
         self.MONGO_DB_CLIENT = self._set_mongo_db_client()
+        self.WEB_PORT = self._set_web_port()
         self.mongo_repo = self._set_mongo_repository()
         self.topics = {
             'model-tasks-do': None,
@@ -64,3 +66,9 @@ class Config:
                                                     value_type=ModelTask)
         self.topics['model-metadata-updates'] = app.topic(
             'model-metadata-updates', value_type=ModelMetadata)
+
+    def _set_web_port(self):
+        web_port = os.getenv('WEB_PORT')
+        if not web_port:
+            web_port = 8089
+        return web_port

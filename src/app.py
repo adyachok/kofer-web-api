@@ -12,7 +12,7 @@ config = Config()
 
 app = faust.App('web-api', broker=config.KAFKA_BROKER_URL,
                 debug=True,
-                web_port=8089,
+                web_port=config.WEB_PORT,
                 autodiscover=True,
                 origin='src'
                 )
