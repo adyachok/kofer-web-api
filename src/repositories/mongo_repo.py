@@ -1,3 +1,5 @@
+import json
+
 from bson import ObjectId
 
 from src.models.faust_dao import ModelMetadata, ModelTask
@@ -50,10 +52,14 @@ class MongoRepository(BaseMongoRepository):
     async def create_update_model_metadata(self, metadata):
         collection = 'model_metadata'
         assert isinstance(metadata, ModelMetadata)
+        # TensorFlow Server provides business metadata as string encoded JSON
+        if type(metadata.business_metadata) == str:
+            metadata.business_metadata = json.loads(metadata.business_metadata)
+        # Model name should be unique (for this prototype). For future
+        # implementations, please, use compound keys
         old_doc = await self.do_find_one(collection, {'name': metadata.name})
         if old_doc:
             _id = old_doc.get('_id')
-            metadata._id = _id
             matched_count, updated_count = await self.do_update(
                 collection, _id, metadata.asdict())
             if matched_count and updated_count and \
