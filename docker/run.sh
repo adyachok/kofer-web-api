@@ -6,4 +6,4 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
-cd src && exec python3 app.py worker
+exec python3 src/app.py worker
