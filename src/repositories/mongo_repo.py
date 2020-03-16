@@ -40,11 +40,9 @@ class BaseMongoRepository:
 
     async def do_update(self, collection, _id, document):
         document.pop('_id', None)
-        doc = await self.db[collection].replace_one({'_id': ObjectId(_id)},
-                                                    document)
-        if doc:
-            doc['_id'] = str(doc.get('_id'))
-        return doc
+        result = await self.db[collection].replace_one(
+            {'_id': ObjectId(_id)}, document)
+        return result.matched_count, result.modified_count
 
 
 class MongoRepository(BaseMongoRepository):
@@ -56,7 +54,13 @@ class MongoRepository(BaseMongoRepository):
         if old_doc:
             _id = old_doc.get('_id')
             metadata._id = _id
-            return await self.do_update(collection, _id, metadata.asdict())
+            matched_count, updated_count = await self.do_update(
+                collection, _id, metadata.asdict())
+            if matched_count and updated_count and \
+                    matched_count == updated_count:
+                logger.info(f'Model {metadata.name} was successfully updated.')
+            else:
+                logger.info(f'Model {metadata.name} update fail.')
         else:
             return await self.do_insert(collection, metadata.asdict())
 
@@ -71,9 +75,13 @@ class MongoRepository(BaseMongoRepository):
         doc = await self.find_task_by_id(task.id)
         if not task:
             raise Exception(f'Task with id {task.id} not found.')
-        return await self.do_update(collection,
-                                    doc.get('_id'),
-                                    task.asdict())
+        matched_count, updated_count = await self.do_update(
+            collection, doc.get('_id'), task.asdict())
+        if matched_count and updated_count and \
+                matched_count == updated_count:
+            logger.info(f'Task {task.id} was successfully updated.')
+        else:
+            logger.info(f'Task {task.id} update fail.')
 
     async def find_task_by_id(self, task_id):
         return await self.do_find_one('tasks', {'_id': ObjectId(task_id)})
