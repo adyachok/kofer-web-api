@@ -39,6 +39,7 @@ class BaseMongoRepository:
             yield document
 
     async def do_update(self, collection, _id, document):
+        document.pop('_id', None)
         doc = await self.db[collection].replace_one({'_id': ObjectId(_id)},
                                                     document)
         if doc:
@@ -91,5 +92,5 @@ class MongoRepository(BaseMongoRepository):
     async def get_models(self):
         models = []
         async for model_metadata in self.do_find_all('model_metadata'):
-            models = [ModelMetadata.from_data(model_metadata)]
+            models.append(ModelMetadata.from_data(model_metadata))
         return models
