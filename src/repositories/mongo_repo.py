@@ -53,7 +53,8 @@ class MongoRepository(BaseMongoRepository):
         collection = 'model_metadata'
         assert isinstance(metadata, ModelMetadata)
         # TensorFlow Server provides business metadata as string encoded JSON
-        if type(metadata.business_metadata) == str:
+        logger.info(f'Business type: {type(metadata.business_metadata)}')
+        if isinstance(metadata.business_metadata, str):
             metadata.business_metadata = json.loads(metadata.business_metadata)
         # Model name should be unique (for this prototype). For future
         # implementations, please, use compound keys
