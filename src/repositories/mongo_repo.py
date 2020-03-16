@@ -1,7 +1,7 @@
 from bson import ObjectId
 
-from models.faust_dao import ModelMetadata, ModelTask
-from utils.logger import get_logger
+from src.models.faust_dao import ModelMetadata, ModelTask
+from src.utils.logger import get_logger
 
 
 logger = get_logger('mongo-repo')

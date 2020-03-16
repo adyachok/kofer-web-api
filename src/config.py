@@ -2,9 +2,9 @@ import os
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from models.faust_dao import ModelTask, ModelMetadata
-from repositories.mongo_repo import MongoRepository
-from utils.logger import get_logger
+from src.models.faust_dao import ModelTask, ModelMetadata
+from src.repositories.mongo_repo import MongoRepository
+from src.utils.logger import get_logger
 
 
 logger = get_logger('config')

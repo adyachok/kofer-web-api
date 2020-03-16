@@ -4,9 +4,6 @@ from enum import Enum
 import faust
 from typing import Any, Optional
 
-from bson import ObjectId
-from faust.models import StringField
-
 
 class ModelMetadata(faust.Record, ABC):
     _id: Optional[str]

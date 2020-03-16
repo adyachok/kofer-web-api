@@ -6,4 +6,4 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
-exec python3 src worker
+exec python3 -m src worker
