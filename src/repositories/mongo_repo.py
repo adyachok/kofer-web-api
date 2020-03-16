@@ -21,10 +21,10 @@ class BaseMongoRepository:
         return inner
 
     async def do_insert(self, collection, document):
-        doc = await self.db[collection].insert_one(document)
-        if doc:
-            doc['_id'] = str(doc.get('_id'))
-        return doc
+        document.pop('_id', None)
+        result = await self.db[collection].insert_one(document)
+        # returns ObjectId object
+        return result.inserted_id
 
     async def do_find_one(self, collection, condition):
         doc = await self.db[collection].find_one(condition)
