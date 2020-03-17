@@ -4,7 +4,7 @@ from enum import Enum
 import faust
 from typing import Any, Optional
 
-from utils.fields import ChoiceField
+from src.utils.fields import ChoiceField
 
 
 class ModelMetadata(faust.Record, ABC):
