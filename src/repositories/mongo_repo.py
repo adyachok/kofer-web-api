@@ -101,7 +101,7 @@ class MongoRepository(BaseMongoRepository):
     async def get_tasks(self):
         tasks = []
         async for task in self.do_find_all('tasks'):
-            tasks.append[ModelTask.from_data(task)]
+            tasks.append(ModelTask.from_data(task))
         return tasks
 
     async def get_models(self):

@@ -4,6 +4,8 @@ from enum import Enum
 import faust
 from typing import Any, Optional
 
+from utils.fields import ChoiceField
+
 
 class ModelMetadata(faust.Record, ABC):
     _id: Optional[str]
@@ -20,10 +22,12 @@ class State(Enum):
     ERROR = 'error'
 
 
-class ModelTask:
-    # _id: str
+class ModelTask(faust.Record):
+    _id: Optional[str]
     model_name: str
-    model_version: str
-    data: Any
-    result: Any
-    state: State = State.QUEUED
+    data: dict
+    result: Optional[dict]
+    # state: State = State.QUEUED
+    state: str = ChoiceField(choices=['QUEUED', 'IN_PROGRESS', 'FINISHED',
+                                      'ERROR'],
+                             default='QUEUED', required=False)
