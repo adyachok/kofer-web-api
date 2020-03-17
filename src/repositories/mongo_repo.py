@@ -79,14 +79,14 @@ class MongoRepository(BaseMongoRepository):
     async def update_task(self, task):
         collection = 'tasks'
         assert isinstance(task, ModelTask)
-        doc = await self.find_task_by_id(task.id)
+        doc = await self.find_task_by_id(task._id)
         if not task:
-            raise Exception(f'Task with id {task.id} not found.')
+            raise Exception(f'Task with id {task._id} not found.')
         matched_count, updated_count = await self.do_update(
             collection, doc.get('_id'), task.asdict())
         if matched_count and updated_count and \
                 matched_count == updated_count:
-            logger.info(f'Task {task.id} was successfully updated.')
+            logger.info(f'Task {task._id} was successfully updated.')
         else:
             logger.info(f'Task {task.id} update fail.')
 

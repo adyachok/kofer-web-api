@@ -24,6 +24,7 @@ async def done_tasks_listener(tasks):
     :param tasks: stream of ModelTask
     """
     async for task in tasks:
-        logger.info(f'Task {task.id} for model {task.model_name} and version '
-                    f'{task.latest_version} is done.')
+        logger.info(f'Task {task._id} for model name {task.model_name} '
+                    f' is in state {task.state}.')
         # TODO: save task updates to MongoDB
+        await config.mongo_repo.update_task(task)
