@@ -13,7 +13,6 @@ async def metadata_update_listener(updates):
     async for update in updates:
         logger.info(f'Model {update.name} with version {update.latest_version}'
                     f' is updated.')
-        # TODO: save model updates to MongoDB
         logger.info(f'Is about to insert metadata {update.asdict()}')
         await config.mongo_repo.create_update_model_metadata(update)
 

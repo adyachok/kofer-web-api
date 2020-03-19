@@ -1,5 +1,6 @@
 import os
 
+from faust.types.web import ResourceOptions
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from src.models.faust_dao import ModelTask, ModelMetadata
@@ -31,6 +32,7 @@ class Config:
             'model-tasksdone': None,
             'model-metadata-updates': None
         }
+        self.WEB_CORS_OPTIONS = self._set_web_cors_options()
 
     def _set_request_interval(self):
         request_interval = os.getenv('ZZ_MONITOR_REQUEST_INTERVAL')
@@ -72,3 +74,9 @@ class Config:
         if not web_port:
             web_port = 8089
         return web_port
+
+    def _set_web_cors_options(self):
+        fe_url = os.getenv('FE-URL')
+        if not fe_url:
+            fe_url = '*'
+        return {fe_url: ResourceOptions(allow_methods='*',)}

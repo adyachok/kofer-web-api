@@ -91,12 +91,15 @@ class MongoRepository(BaseMongoRepository):
             logger.info(f'Task {task.id} update fail.')
 
     async def find_task_by_id(self, task_id):
-        return await self.do_find_one('tasks', {'_id': ObjectId(task_id)})
+        task = await self.do_find_one('tasks', {'_id': ObjectId(task_id)})
+        if task:
+            return ModelTask.from_data(task)
 
     async def find_model_metadata_by_id(self, model_id):
         model = await self.do_find_one('model_metadata',
                                        {'_id': ObjectId(model_id)})
-        return ModelMetadata.from_data(model)
+        if model:
+            return ModelMetadata.from_data(model)
 
     async def get_tasks(self):
         tasks = []

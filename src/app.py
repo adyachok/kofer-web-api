@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import faust
+from faust.types.web import ResourceOptions
 
 from src.config import Config
 from src.utils.logger import get_logger
@@ -14,7 +15,8 @@ app = faust.App('web-api', broker=config.KAFKA_BROKER_URL,
                 debug=True,
                 web_port=config.WEB_PORT,
                 autodiscover=True,
-                origin='src'
+                origin='src',
+                web_cors_options=config.WEB_CORS_OPTIONS
                 )
 config.init_app(app)
 
