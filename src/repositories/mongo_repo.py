@@ -52,10 +52,7 @@ class MongoRepository(BaseMongoRepository):
     async def create_update_model_metadata(self, metadata):
         collection = 'model_metadata'
         assert isinstance(metadata, ModelMetadata)
-        # TensorFlow Server provides business metadata as string encoded JSON
-        bmtd = metadata.business_metadata.get('outputs')
-        if isinstance(bmtd, str):
-            metadata.business_metadata['outputs'] = json.loads(bmtd)
+        assert  isinstance(metadata.business_metadata, dict)
         # Model name should be unique (for this prototype). For future
         # implementations, please, use compound keys
         old_doc = await self.do_find_one(collection, {'name': metadata.name})
