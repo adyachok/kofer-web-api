@@ -32,7 +32,7 @@ class TaskListView(web.View):
         else:
             msg = f'Task {task._id} was failed to submit.'
         return self.json({'payload': {
-            'msg': msg
+            'task_id': task._id
         }})
 
 

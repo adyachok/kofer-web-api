@@ -29,7 +29,7 @@ class Config:
         self.mongo_repo = self._set_mongo_repository()
         self.topics = {
             'model-tasks-do': None,
-            'model-tasks-done': None,
+            'model-tasksdone': None,
             'model-metadata-updates': None
         }
         self.WEB_CORS_OPTIONS = self._set_web_cors_options()
@@ -79,4 +79,4 @@ class Config:
         fe_url = os.getenv('FE-URL')
         if not fe_url:
             fe_url = '*'
-        return {fe_url: ResourceOptions(allow_methods='*',)}
+        return {fe_url: ResourceOptions(allow_methods='*', allow_headers='*')}
