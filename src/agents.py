@@ -1,3 +1,6 @@
+import json
+
+from models.faust_dao import ModelMetadata
 from src.app import app, config
 from src.utils.logger import get_logger
 
@@ -13,8 +16,32 @@ async def metadata_update_listener(updates):
     async for update in updates:
         logger.info(f'Model {update.name} with version {update.latest_version}'
                     f' is updated.')
-        logger.info(f'Is about to insert metadata {update.asdict()}')
-        await config.mongo_repo.create_update_model_metadata(update)
+        prepared_update = _parse_business_metadata(update)
+        if not prepared_update:
+            logger.error(f'Update for model {update.name} cannot be saved.')
+            continue
+        logger.info(f'Is about to insert metadata {prepared_update.asdict()}')
+        await config.mongo_repo.create_update_model_metadata(prepared_update)
+
+
+def _parse_business_metadata(update: ModelMetadata) -> ModelMetadata:
+    """ModelMetadata comes from TensorFlow Server as a dict {"outputs": str}.
+    This function extracts string from the dict and decodes it back to JSON
+    format.
+    :param update: ModelMetadata
+    :return: ModelMetadata
+    """
+    metadata = update.business_metadata.get('outputs')
+    if not metadata:
+        logger.error(f'No business metadata found for the '
+                     f'model with name {update.name}.')
+        return
+    try:
+        update.business_metadata = json.loads(metadata)
+        return update
+    except json.decoder.JSONDecodeError as e:
+        logger.error(f'Model {update.name} cannot convert a business '
+                     f'metadata to JSON format.')
 
 
 @app.agent(config.topics['model-tasks-done'])
