@@ -6,7 +6,6 @@ from faust import web
 #   https://faust.readthedocs.io/en/latest/_modules/faust/web/blueprints.html
 from src.models.faust_dao import ModelTask
 from src.app import app, config
-
 from src.utils.logger import get_logger
 
 

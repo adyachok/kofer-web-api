@@ -1,13 +1,9 @@
-import json
 from typing import Any
 
 from faust import web
 # LOOK:
 #   https://faust.readthedocs.io/en/latest/_modules/faust/web/blueprints.html
 from src.app import app, config
-
-
-# blueprint = web.Blueprint('models')
 
 
 @app.page('model/', name='list')

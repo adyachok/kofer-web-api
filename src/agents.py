@@ -1,6 +1,6 @@
 import json
 
-from models.faust_dao import ModelMetadata
+from src.models.faust_dao import ModelMetadata
 from src.app import app, config
 from src.utils.logger import get_logger
 

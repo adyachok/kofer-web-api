@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import faust
-from faust.types.web import ResourceOptions
 
 from src.config import Config
 from src.utils.logger import get_logger
