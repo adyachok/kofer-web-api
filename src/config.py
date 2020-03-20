@@ -29,7 +29,7 @@ class Config:
         self.mongo_repo = self._set_mongo_repository()
         self.topics = {
             'model-tasks-do': None,
-            'model-tasksdone': None,
+            'model-tasks-done': None,
             'model-metadata-updates': None
         }
         self.WEB_CORS_OPTIONS = self._set_web_cors_options()
