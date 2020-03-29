@@ -49,3 +49,31 @@ class ModelTask(faust.Record, serializer='json'):
                     v = [item.asdict() for item in v]
             prepared_dict[k] = v
         return prepared_dict
+
+
+class RunnerFile(faust.Record):
+    code: str
+    commiter: str
+    revision: int
+    commit_hash: str
+    createdAt: str
+    updatedAt: str
+
+
+class Runner(faust.Record):
+    _id: Optional[str]
+    name: str
+    description: str
+    department: str
+    current_revision: int
+    file: RunnerFile
+    createdAt: str
+    updatedAt: str
+
+    def _prepare_dict(self, data):
+        prepared_dict = {}
+        for k, v in data.items():
+            if isinstance(v, RunnerFile):
+                v = v.asdict()
+            prepared_dict[k] = v
+        return prepared_dict

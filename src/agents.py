@@ -54,3 +54,16 @@ async def done_tasks_listener(tasks):
                     f' is in state {task.state}.')
         # TODO: save task updates to MongoDB
         await config.mongo_repo.update_task(task)
+
+
+@app.agent(config.topics['runner-update'])
+async def runner_update_listener(runners):
+    """Checks for tasks to be done and saves result to MongoDB
+    :param tasks: stream of ModelTask
+    """
+    async for runner in runners:
+        logger.info(f'Received update for runner name {runner.name} department'
+                    f' {runner.department} with current revision'
+                    f' {runner.current_revision}.')
+        # TODO: save runner updates to MongoDB
+        await config.mongo_repo.create_update_runner(runner)

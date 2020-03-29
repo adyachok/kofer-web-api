@@ -2,7 +2,7 @@ import json
 
 from bson import ObjectId
 
-from src.models.faust_dao import ModelMetadata, ModelTask
+from src.models.faust_dao import ModelMetadata, ModelTask, Runner
 from src.utils.logger import get_logger
 
 
@@ -109,3 +109,38 @@ class MongoRepository(BaseMongoRepository):
         async for model_metadata in self.do_find_all('model_metadata'):
             models.append(ModelMetadata.from_data(model_metadata))
         return models
+
+    async def create_update_runner(self, runner: Runner):
+        collection = 'runners'
+        assert isinstance(runner, Runner)
+        old_doc = await self.do_find_one(collection,
+                                         {'$and': [
+                                             {'name': runner.name,
+                                              'department': runner.department}
+                                         ]})
+        if old_doc:
+            _id = old_doc.get('_id')
+            matched_count, updated_count = await self.do_update(
+                collection, _id, runner.asdict())
+            if matched_count and updated_count and \
+                    matched_count == updated_count:
+                logger.info(f'Runner with name {runner.name} and '
+                            f'department {runner.department} was '
+                            f'successfully updated.')
+            else:
+                logger.info(f'Runner with name {runner.name} and '
+                            f'department {runner.department} update fail.')
+        else:
+            return await self.do_insert(collection, runner.asdict())
+
+    async def find_runner_by_id(self, runner_id):
+        runner = await self.do_find_one('runners',
+                                        {'_id': ObjectId(runner_id)})
+        if runner:
+            return Runner.from_data(runner)
+
+    async def get_runners(self):
+        runners = []
+        async for runner in self.do_find_all('runners'):
+            runners.append(Runner.from_data(runner))
+        return runners

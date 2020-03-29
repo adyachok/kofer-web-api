@@ -3,7 +3,7 @@ import os
 from faust.types.web import ResourceOptions
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from src.models.faust_dao import ModelTask, ModelMetadata
+from src.models.faust_dao import ModelTask, ModelMetadata, Runner
 from src.repositories.mongo_repo import MongoRepository
 from src.utils.logger import get_logger
 
@@ -30,7 +30,8 @@ class Config:
         self.topics = {
             'model-tasks-do': None,
             'model-tasksdone': None,
-            'model-metadata-updates': None
+            'model-metadata-updates': None,
+            'runner-update': None
         }
         self.WEB_CORS_OPTIONS = self._set_web_cors_options()
 
@@ -68,6 +69,8 @@ class Config:
                                                     value_type=ModelTask)
         self.topics['model-metadata-updates'] = app.topic(
             'model-metadata-updates', value_type=ModelMetadata)
+        self.topics['runner-update'] = app.topic(
+            'runner-update', value_type=Runner)
 
     def _set_web_port(self):
         web_port = os.getenv('WEB_PORT')
