@@ -1,8 +1,8 @@
 from faust import web
 
 from src.app import app, config
-from utils.logger import get_logger
-from utils.web import to_camel_case
+from src.utils.logger import get_logger
+from src.utils.web import to_camel_case
 
 logger = get_logger('runner-view')
 
