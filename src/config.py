@@ -3,7 +3,8 @@ import os
 from faust.types.web import ResourceOptions
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from src.models.faust_dao import ModelTask, ModelMetadata, Runner
+from src.models.faust_dao import ModelTask, ModelMetadata, Runner, \
+    ModelTaskDoEvent
 from src.repositories.mongo_repo import MongoRepository
 from src.utils.logger import get_logger
 
@@ -64,7 +65,7 @@ class Config:
 
     def _init_topics(self, app):
         self.topics['model-tasks-do'] = app.topic('model-tasks-do',
-                                                  value_type=ModelTask)
+                                                  value_type=ModelTaskDoEvent)
         self.topics['model-tasks-done'] = app.topic('model-tasks-done',
                                                     value_type=ModelTask)
         self.topics['model-metadata-updates'] = app.topic(

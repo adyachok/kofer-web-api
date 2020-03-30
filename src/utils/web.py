@@ -1,3 +1,6 @@
+import re
+
+
 def to_camel_case(dict_obj):
     json_dict = {}
     for key, val in dict_obj.items():
@@ -11,3 +14,20 @@ def to_camel_case(dict_obj):
         else:
             json_dict[key] = val
     return json_dict
+
+
+def to_underscores(dict_obj):
+
+    def convert(key):
+        substr = re.findall('[A-Z][^A-Z]*', key)
+        substr.insert(0, key[:len(key) - len(''.join(substr))])
+        return '_'.join(substr).lower() if len(substr) else key
+
+    request_dict = {}
+    for key, val in dict_obj.items():
+        key = convert(key)
+        if isinstance(val, dict):
+            request_dict[key] = to_underscores(val)
+        else:
+            request_dict[key] = val
+    return request_dict

@@ -39,6 +39,8 @@ class ModelTask(faust.Record, serializer='json'):
     state: str = ChoiceField(choices=['QUEUED', 'IN_PROGRESS', 'FINISHED',
                                       'ERROR'],
                              default='QUEUED', required=False)
+    runner_id: Optional[str] = ''
+    execution_state: Optional[int] = 0
 
     def _prepare_dict(self, data):
         # Remove keys with None values from payload.
@@ -77,3 +79,13 @@ class Runner(faust.Record):
                 v = v.asdict()
             prepared_dict[k] = v
         return prepared_dict
+
+
+class ModelTaskDoEvent(faust.Record):
+    task: ModelTask
+    runner_code: Optional[str] = ''
+
+
+class ModelTaskDoEvent(faust.Record):
+    task: ModelTask
+    runner_code: Optional[str] = ''
