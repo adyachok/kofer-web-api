@@ -28,6 +28,8 @@ def to_underscores(dict_obj):
         key = convert(key)
         if isinstance(val, dict):
             request_dict[key] = to_underscores(val)
+        elif isinstance(val, list):
+            request_dict[key] = [to_underscores(item) for item in val]
         else:
             request_dict[key] = val
     return request_dict
