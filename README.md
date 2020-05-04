@@ -1,6 +1,9 @@
 # WEB-API
 
 
+![alt text](scientist-ice-cart.png "Logo")
+
+
 ### Description
 Web service provides API endpoint for interaction with data-science models and
 scripts (called *runner* in the system). 
