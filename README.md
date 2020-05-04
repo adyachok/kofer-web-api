@@ -17,6 +17,27 @@ no strong, tight relations in it. This means that every part of ZZ can be
 modified - removed - rewritten accordingly to the needs of customer.
 
 
+### Main components
+- **models** - this folder contains classes, which represent the main entities 
+ in the service. Mostly all of them inherit from 
+ [faust.Record](https://faust.readthedocs.io/en/latest/reference/faust.models.record.html).
+ The Record class is used for serialization/deserialization of Python objects.
+ - **app** - is the main entry point
+ - **config** - contains all configuration settings/logic.
+ - **agents** - that's the place where all the job is done. File contains logic
+ to listen on events in Kafka channels.
+ There are next channels:
+    1. **model-metadata-updates** - stream of model metadata. On every model
+    deployment service expect to find event in this stream. Event contains all 
+    important model metadata.
+    2. **model-task-do / model-tasks-done** - streams to send a model inference 
+    task (event) and receive result event back.
+    3. **runner-update** - stream of runner updates.
+ - **repositories** - contains persistence logic
+ - **views** - contains API endpoints description
+    
+
+
 ### Installation
 
 
