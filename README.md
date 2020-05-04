@@ -62,20 +62,20 @@ For MongoDB thre can be found a few images, for example
 
 1. Set MongoDB user:
 
-
-    use admin
+        use admin
+        
+        db.auth(admin_user, admin_password)
+        
+        db.createUser(
+           {
+             user: "web_api",
+             pwd: "secret",
+             roles: [ 
+                {role: "readWrite", db: "web-api"}
+              ]
+           }
+        )
     
-    db.auth(admin_user, admin_password)
-    
-    db.createUser(
-       {
-         user: "web_api",
-         pwd: "secret",
-         roles: [ 
-            {role: "readWrite", db: "web-api"}
-          ]
-       }
-    )
 
 2. Set Kafka topics:
     
